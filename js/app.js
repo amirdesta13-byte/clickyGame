@@ -4,7 +4,7 @@
 
 // Variables
 let score = 0;
-let timeLeft = 60;
+let timeLeft = 3;
 let gameStarted = false;
 let gameEnded = false;
 let interval = null;
@@ -34,6 +34,9 @@ button2.addEventListener('click', () => {
 
 input1.style.display = 'none';
 label1.style.display = 'none';
+input1.style.display = 'none';
+label1.style.display = 'none';
+button2.style.display = 'none';
 
 // Functions
 function increaseScore() {
@@ -67,6 +70,28 @@ function endGame() {
 }
 
 async function submitHighScore() {
+  if (input1.value.trim() === "") {
+    button2.innerText = "Skriv ditt namn först!";
+    return;}
+
+  try {
+    await fetch("https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/", {
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify({ name: input1.value, score: score })
+    });
+    button2.innerText = "Ditt resultat har sparat" ;
+    button2.disabled = true;
+  } catch (error) {
+  button2.innerText = "Ett fel uppstod" ;
+  }
+}
+
+
+
+
+
+/* async function submitHighScore() {
   console.log(input1.value);
 
 
@@ -77,3 +102,4 @@ async function submitHighScore() {
 
   console.log(response);
 }
+*/
