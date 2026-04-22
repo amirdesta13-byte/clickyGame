@@ -1,24 +1,23 @@
 // Click a button or object to earn points so that I can increase my score.
 // See my current score during the game so that I know how well I am doing.
-
 // See a countdown timer so that I know how much time is left. setInterval();
 
 // Variables
-let score : number = 0;
-let timeLeft : number = 5;
-let gameStarted : boolean = false;
-let gameEnded : boolean = false;
-let interval : null = null;
+let score = 0;
+let timeLeft = 60;
+let gameStarted = false;
+let gameEnded = false;
+let interval = null;
 
 // HTML DOM
-const button1 : HTMLElement = document.getElementById('button1');
-const button2 : HTMLElement = document.getElementById('button2');
-const scoreDisplay : HTMLElement = document.getElementById('scoreDisplay');
-const timerDisplay : HTMLElement = document.getElementById('timerDisplay');
-const label1 : HTMLElement = document.getElementById('label1');
-const input1 : HTMLElement = document.getElementById('name');
+const button1 = document.getElementById('button1');
+const scoreDisplay = document.getElementById('scoreDisplay');
+const timerDisplay = document.getElementById('timerDisplay');
+const label1 = document.getElementById('label1');
+const input1 = document.getElementById('name');
+const button2 = document.getElementById('button2');
 
-// UI Functions & Events
+// UI Functions
 button1.addEventListener('click', () => {
   if (!gameEnded) {
     increaseScore();
@@ -35,15 +34,15 @@ button2.addEventListener('click', () => {
 
 input1.style.display = 'none';
 label1.style.display = 'none';
-button2.style.display = 'none';
 
 // Functions
-function increaseScore() : void {
+function increaseScore() {
   score++;
+  console.log(score);
   scoreDisplay.innerText = score;
 }
 
-function countdown() : void {
+function countdown() {
   timeLeft--;
   timerDisplay.innerText = timeLeft;
 
@@ -53,12 +52,12 @@ function countdown() : void {
   }
 }
 
-function startGame() : void {
+function startGame() {
   interval = setInterval(countdown, 1000);
   gameStarted = true;
 }
 
-function endGame() : void {
+function endGame() {
   gameEnded = true;
   clearInterval(interval);
   button1.style.display = 'none';
@@ -67,7 +66,14 @@ function endGame() : void {
   button2.style.display = 'block';
 }
 
-function submitHighScore() : void {
+async function submitHighScore() {
   console.log(input1.value);
-  // TODO: POST value to API from Ben.
+
+
+  const response = await fetch("https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/", {
+    method: "POST",
+    body: JSON.stringify({name: input1.value, score: score}),
+  });
+
+  console.log(response);
 }
